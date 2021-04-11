@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from StackApp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.home, name='home'),
+    path('question/1', views.question1, name='question1'),
+    path('question/2', views.question2, name='question2'),
+    path('question/3', views.question3, name='question3'),
+    path('question/4', views.question4, name='question4'),
+    path('question/5', views.question5, name='question5'),
 ]

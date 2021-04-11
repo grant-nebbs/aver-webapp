@@ -3,18 +3,17 @@ from django.db import models
 
 # Create your models here.
 class User(models.Model):
-    id = models.IntegerField()
-    name = models.CharField()
-    link = models.CharField()
+    userId = models.IntegerField()
+    name = models.CharField(max_length=100)
+    link = models.CharField(max_length=100)
     createdDate = models.DateTimeField()
 
 
 class Post(models.Model):
-    id = models.IntegerField()
-    question = models.ForeignKey(Question, on_delete=models.CASCADE())
-    owner = models.ForeignKey(User, on_delete=models.CASCADE())
+    postId = models.IntegerField()
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
     createdDate = models.DateTimeField()
     score = models.IntegerField()
-    type = models.CharField()
-    title = models.CharField()
-    contents = models.CharField()
+    type = models.CharField(max_length=100)
+    title = models.CharField(max_length=100)
+    contents = models.CharField(max_length=100)

@@ -21,11 +21,10 @@ def home(request):
     while 'has_more' in data and data['has_more']:
         response = requests.get('https://api.stackexchange.com/2.2/users?fromdate=1615420800&order=asc&sort=reputation'
                                 '&site=stackoverflow&pagesize=100&page=' + str(page_num))
-        questions_answered = 0
         data = response.json()
         values = data.values()
         total_users = 0
-        total_questions = 0
+
         i = 0
         for value in values:
             if type(value) == list:
@@ -34,7 +33,7 @@ def home(request):
 
             total_num_users.append(total_users)
 
-            if page_num == 1:
+            if page_num == 1 and type(value) == list:
                 for user in value:
                     user_id = user.get('user_id')
                     name = user.get('display_name')
@@ -51,36 +50,42 @@ def home(request):
 
             break
         page_num += 1
+        # Reads only the first 30 pages in order to not overload api servers
         if page_num == 30:
             break
 
-    q_response = requests.get('https://api.stackexchange.com/questions?fromdate=1615420800&order=asc&sort=activity&site'
+    q_response = requests.get('https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&site'
                               '=stackoverflow&pagesize=100&page=1')
     q_data = q_response.json()
     q_page_num = 1
     while 'has_more' in q_data and q_data['has_more']:
-        q_response = requests.get('https://api.stackexchange.com/questions?fromdate=1615420800&order=asc&sort'
-                                  '=activity&site '
+        q_response = requests.get('https://api.stackexchange.com/2.2/questions?order=desc&sort=activity&site'
                                   '=stackoverflow&pagesize=100&page=' + str(q_page_num))
         q_data = q_response.json()
         values = q_data.values()
+        total_questions = 0
+        questions_answered = 0
         for value in values:
-            for question in value:
-                total_questions += 1
-                for user in users:
-                    if user.user_id == question['owner']['user_id']:
-                        if user.asked_question:
-                            user.multiple_questions = True
-                        else:
-                            user.asked_question = True
+            if type(value) == list:
+                for question in value:
+                    total_questions += 1
+                    for user in users:
+                        if 'user_id' in question['owner'] and user.user_id == question['owner']['user_id']:
+                            if user.asked_question:
+                                user.multiple_questions = True
+                            else:
+                                user.asked_question = True
 
-                        if question['is_answered']:
-                            questions_answered += 1
+                            if question['is_answered']:
+                                questions_answered += 1
+
+            total_num_questions.append(total_questions)
+            num_of_questions_answered.append(questions_answered)
 
             break
-        total_num_questions.append(total_questions)
-        num_of_questions_answered.append(questions_answered)
+
         q_page_num += 1
+        # Reads only the first 30 pages in order to not overload api servers
         if q_page_num == 30:
             break
 

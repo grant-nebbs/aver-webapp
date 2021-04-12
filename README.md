@@ -19,3 +19,10 @@ WebApp that answers questions about Stack Overflow
 - https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Home_page
 - https://simpleisbetterthancomplex.com/tutorial/2018/02/03/how-to-use-restful-apis-with-django.html
 
+## Prospective improvements
+- Dynamic API calls
+  - Calls are currently hard coded for March 11 as the "date from" parameter
+- API calls are triggered by button/interface
+  - Calls are currently triggered by loading home page
+- Cleaner handling of json received from API calls
+

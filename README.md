@@ -1,11 +1,17 @@
 # Aver-WebApp
 WebApp that answers questions about Stack Overflow
 
+## Requirements
+- Python
+  - https://www.python.org/downloads/
+- Django
+  - https://www.djangoproject.com/download/
+- Other minor requirements in "requirements.txt" file  
+
 ## How to Run
-- Ensure you have the requirements necessary to run program
-  - These requirements can be found in requirements.txt
 - Navigate to home directory (You should already be here)
 - Run the command "python manage.py runserver"
+- Open the local host to view
 
 ## Resources used
 - https://docs.python.org/3/
